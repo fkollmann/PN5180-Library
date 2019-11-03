@@ -543,10 +543,6 @@ bool PN5180::clearIRQStatus(uint32_t irqMask) {
 /*
  * Get TRANSCEIVE_STATE from RF_STATUS register
  */
-#ifdef DEBUG
-extern void showIRQStatus(uint32_t);
-#endif
-
 PN5180TransceiveStat PN5180::getTransceiveState() {
   PN5180DEBUG(F("Get Transceive state...\n"));
 
