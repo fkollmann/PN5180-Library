@@ -503,12 +503,14 @@ bool PN5180::transceiveCommand(uint8_t *sendBuffer, size_t sendBufferLen, uint8_
  * Reset NFC device
  */
 void PN5180::reset() {
+  PN5180DEBUG(F("Resetting device...\n"));
+
   digitalWrite(PN5180_RST, LOW);  // at least 10us required
   delay(10);
   digitalWrite(PN5180_RST, HIGH); // 2ms to ramp up required
   delay(10);
 
-  while (0 == (IDLE_IRQ_STAT & getIRQStatus())); // wait for system to start up
+  while (0 == (IDLE_IRQ_STAT & getIRQStatus())) delay(10); // wait for system to start up
 
   clearIRQStatus(0xffffffff); // clear all flags
 }
@@ -523,9 +525,7 @@ uint32_t PN5180::getIRQStatus() {
   uint32_t irqStatus;
   readRegister(IRQ_STATUS, &irqStatus);
 
-  PN5180DEBUG(F("IRQ-Status=0x"));
-  PN5180DEBUG(formatHex(irqStatus));
-  PN5180DEBUG("\n");
+  showIRQStatus(irqStatus);
 
   return irqStatus;
 }

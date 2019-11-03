@@ -29,6 +29,7 @@
 extern char * formatHex(const uint8_t val);
 extern char * formatHex(const uint16_t val);
 extern char * formatHex(const uint32_t val);
+extern void showIRQStatus(uint32_t irqStatus);
 #endif
 
 #endif /* DEBUG_H */

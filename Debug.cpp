@@ -16,7 +16,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 // Lesser General Public License for more details.
 //
-#include <inttypes.h>
+#include <Arduino.h>
 #include "Debug.h"
 
 #ifdef DEBUG
@@ -47,6 +47,33 @@ char * formatHex(uint32_t val) {
   }
   hexBuffer[8] = '\0';
   return hexBuffer;
+}
+
+void showIRQStatus(uint32_t irqStatus) {
+    Serial.print(F("IRQ-Status 0x"));
+    Serial.print(irqStatus, HEX);
+    Serial.print(": [ ");
+    if (irqStatus & (1<< 0)) Serial.print(F("RQ "));
+    if (irqStatus & (1<< 1)) Serial.print(F("TX "));
+    if (irqStatus & (1<< 2)) Serial.print(F("IDLE "));
+    if (irqStatus & (1<< 3)) Serial.print(F("MODE_DETECTED "));
+    if (irqStatus & (1<< 4)) Serial.print(F("CARD_ACTIVATED "));
+    if (irqStatus & (1<< 5)) Serial.print(F("STATE_CHANGE "));
+    if (irqStatus & (1<< 6)) Serial.print(F("RFOFF_DET "));
+    if (irqStatus & (1<< 7)) Serial.print(F("RFON_DET "));
+    if (irqStatus & (1<< 8)) Serial.print(F("TX_RFOFF "));
+    if (irqStatus & (1<< 9)) Serial.print(F("TX_RFON "));
+    if (irqStatus & (1<<10)) Serial.print(F("RF_ACTIVE_ERROR "));
+    if (irqStatus & (1<<11)) Serial.print(F("TIMER0 "));
+    if (irqStatus & (1<<12)) Serial.print(F("TIMER1 "));
+    if (irqStatus & (1<<13)) Serial.print(F("TIMER2 "));
+    if (irqStatus & (1<<14)) Serial.print(F("RX_SOF_DET "));
+    if (irqStatus & (1<<15)) Serial.print(F("RX_SC_DET "));
+    if (irqStatus & (1<<16)) Serial.print(F("TEMPSENS_ERROR "));
+    if (irqStatus & (1<<17)) Serial.print(F("GENERAL_ERROR "));
+    if (irqStatus & (1<<18)) Serial.print(F("HV_ERROR "));
+    if (irqStatus & (1<<19)) Serial.print(F("LPCD "));
+    Serial.println("]");
 }
 
 #endif
