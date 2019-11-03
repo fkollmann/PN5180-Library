@@ -382,7 +382,7 @@ bool PN5180::setRF_on() {
   transceiveCommand(cmd, 2);
   SPI.endTransaction();
 
-  while (0 == (TX_RFON_IRQ_STAT & getIRQStatus())); // wait for RF field to set up
+  while (0 == (TX_RFON_IRQ_STAT & getIRQStatus())) delay(10); // wait for RF field to set up
   clearIRQStatus(TX_RFON_IRQ_STAT);
   return true;
 }
@@ -401,7 +401,7 @@ bool PN5180::setRF_off() {
   transceiveCommand(cmd, 2);
   SPI.endTransaction();
 
-  while (0 == (TX_RFOFF_IRQ_STAT & getIRQStatus())); // wait for RF field to shut down
+  while (0 == (TX_RFOFF_IRQ_STAT & getIRQStatus())) delay(10); // wait for RF field to shut down
   clearIRQStatus(TX_RFOFF_IRQ_STAT);
   return true;
 }
@@ -525,7 +525,9 @@ uint32_t PN5180::getIRQStatus() {
   uint32_t irqStatus;
   readRegister(IRQ_STATUS, &irqStatus);
 
+#ifdef DEBUG
   showIRQStatus(irqStatus);
+#endif
 
   return irqStatus;
 }
