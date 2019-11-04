@@ -38,10 +38,8 @@
 
 uint8_t PN5180::readBuffer[508];
 
-PN5180::PN5180(uint8_t SSpin, uint8_t BUSYpin, uint8_t RSTpin) {
-  PN5180_NSS = SSpin;
-  PN5180_BUSY = BUSYpin;
-  PN5180_RST = RSTpin;
+PN5180::PN5180(uint8_t SSpin, uint8_t BUSYpin, uint8_t RSTpin) 
+  : PN5180_NSS(SSpin), PN5180_BUSY(BUSYpin), PN5180_RST(RSTpin), PN5180_SPI_SETTINGS(7000000, MSBFIRST, SPI_MODE0) {
 
   /*
    * 11.4.1 Physical Host Interface
@@ -50,7 +48,7 @@ PN5180::PN5180(uint8_t SSpin, uint8_t BUSYpin, uint8_t RSTpin) {
    * = 0 and CPHA = 0.
    */
   // Settings for PN5180: 7Mbps, MSB first, SPI_MODE0 (CPOL=0, CPHA=0)
-  PN5180_SPI_SETTINGS = SPISettings(7000000, MSBFIRST, SPI_MODE0);
+  // moved to init list --> PN5180_SPI_SETTINGS = SPISettings(7000000, MSBFIRST, SPI_MODE0);
 }
 
 void PN5180::begin() {

@@ -65,12 +65,13 @@ enum PN5180TransceiveStat {
 #define RX_SOF_DET_IRQ_STAT (1<<14) // RF SOF Detection IRQ
 
 class PN5180 {
-private:
-  uint8_t PN5180_NSS;   // active low
-  uint8_t PN5180_BUSY;
-  uint8_t PN5180_RST;
+protected:
+  const uint8_t PN5180_NSS;   // active low
+  const uint8_t PN5180_BUSY;
+  const uint8_t PN5180_RST;
 
-  SPISettings PN5180_SPI_SETTINGS;
+  const SPISettings PN5180_SPI_SETTINGS;
+
   static uint8_t readBuffer[508];
 
 public:
