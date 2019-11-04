@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "PN5180FirmwareUpdate.h"
 #include "Debug.h"
-#include "PN5180Firmware_3_6.h"
+#include "PN5180Firmware_4_0.h"
 
 // SOURCE: https://www.nxp.com/downloads/en/software-support/SW4055.zip
 static uint16_t phHal_Host_CalcCrc16(uint8_t* p, uint32_t dwLength)
@@ -181,8 +181,8 @@ void PN5180FirmwareUpdate::doUpdate() {
   Serial.println(vMinor);
 
   // check image
-  const uint8_t *img = gphDnldNfc_DlSequence3_6;
-  const size_t imgLen = gphDnldNfc_DlSeqSizeOf3_6;
+  const uint8_t *img = gphDnldNfc_DlSequence4_0;
+  const size_t imgLen = gphDnldNfc_DlSeqSizeOf4_0;
   uint8_t imgMajor, imgMinor;
 
   if (!checkImage(img, imgLen, imgMajor, imgMinor))
@@ -192,12 +192,6 @@ void PN5180FirmwareUpdate::doUpdate() {
   Serial.print(imgMajor);
   Serial.print(".");
   Serial.println(imgMinor);
-
-  // update required?
-  if ((imgMajor < vMajor) || (imgMajor == vMajor && imgMinor <= vMinor)) {
-    Serial.println("No firmware update required!");
-    return;
-  }
 
   // perform update
   uploadImage(img, imgLen);
