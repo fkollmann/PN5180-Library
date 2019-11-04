@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println(fmt.Errorf("No input file argument provided. Expect input file: go run generateFirmwareHeader.go PN5180Firmware_4.0.sfwu"))
+		fmt.Println(fmt.Errorf("No input file argument provided. Expect input file: go run PN5180Firmware_generate.go PN5180Firmware_4.0.sfwu"))
 		return
 	}
 
@@ -38,7 +38,7 @@ func main() {
 
 	fmt.Printf("Firmware version: %v.%v\n", major, minor)
 
-	//
+	// generate header content
 	var sb strings.Builder
 
 	sb.WriteString(fmt.Sprintf("static const uint8_t gphDnldNfc_DlSequence%v_%v[] = {\n", major, minor))
