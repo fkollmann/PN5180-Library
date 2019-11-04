@@ -194,16 +194,16 @@ void PN5180FirmwareUpdate::doUpdate() {
   Serial.println(imgMinor);
 
   // update required?
-  /*if ((imgMajor < vMajor) || (imgMajor == vMajor && imgMinor <= vMinor)) {
+  if ((imgMajor < vMajor) || (imgMajor == vMajor && imgMinor <= vMinor)) {
     Serial.println("No firmware update required!");
     return;
-  }*/
+  }
 
   // perform update
   uploadImage(img, imgLen);
 }
 
-bool PN5180FirmwareUpdate::uploadImage(const uint8_t *img, size_t imgLen) {
+PN5180FWState PN5180FirmwareUpdate::uploadImage(const uint8_t *img, size_t imgLen) {
   uint8_t *imgPtr = (uint8_t*)img;
   size_t imgRead = 0;
   uint8_t res[4];
@@ -215,7 +215,7 @@ bool PN5180FirmwareUpdate::uploadImage(const uint8_t *img, size_t imgLen) {
     if (imgPtr[2] != 0XC0) {
       Serial.println("FAILED");
       Serial.println("Found invalid command code in image!");
-      return false;
+      return FWERR_MAGICNO;
     }
 
     // determine payload length
@@ -233,12 +233,12 @@ bool PN5180FirmwareUpdate::uploadImage(const uint8_t *img, size_t imgLen) {
     SPI.endTransaction();
 
     // check status
-    /*if (res[0] != 0) {
+    if (res[0] != 0) {
       Serial.println("FAILED");
       Serial.print("Got error while uploading data: 0x");
       Serial.println(res[0], HEX);
-      return false;
-    }*/
+      return (PN5180FWState)res[0];
+    }
 
     // move forward
     imgPtr += payloadLength + 2;
@@ -249,7 +249,7 @@ bool PN5180FirmwareUpdate::uploadImage(const uint8_t *img, size_t imgLen) {
 
   Serial.println("done");
 
-  return true;
+  return FWERR_OK;
 }
 
 bool PN5180FirmwareUpdate::checkImage(const uint8_t *img, size_t imgLen, uint8_t &major, uint8_t &minor) {
