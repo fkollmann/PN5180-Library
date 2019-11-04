@@ -9,20 +9,14 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 3 {
-		fmt.Println(fmt.Errorf("Not enough file arguments provided. Expect input and output file: go run generateFirmwareHeader.go PN5180Firmware_4.0.sfwu PN5180Firmware_4_0.h"))
+	if len(os.Args) < 2 {
+		fmt.Println(fmt.Errorf("No input file argument provided. Expect input file: go run generateFirmwareHeader.go PN5180Firmware_4.0.sfwu"))
 		return
 	}
 
 	file := os.Args[1]
 	if file == "" {
 		fmt.Println(fmt.Errorf("Empty input file argument provided"))
-		return
-	}
-
-	fileOut := os.Args[2]
-	if fileOut == "" {
-		fmt.Println(fmt.Errorf("Empty output file argument provided"))
 		return
 	}
 
@@ -65,5 +59,5 @@ func main() {
 	sb.WriteString("};\n")
 	sb.WriteString(fmt.Sprintf("uint16_t gphDnldNfc_DlSeqSizeOf%v_%v = %v;\n", major, minor, len(fw)))
 
-	ioutil.WriteFile(fileOut, ([]byte)(sb.String()), 0644)
+	ioutil.WriteFile(fmt.Sprintf("PN5180Firmware_%v_%v.h", major, minor), ([]byte)(sb.String()), 0644)
 }
